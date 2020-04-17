@@ -11,11 +11,11 @@ app.get('/', (req, res) => {
 });
 
 app.post('/slack/command/addtask', (req, res) => {
-  const { channel_name, text } = req.body;
+  const { channel_name, text, user_name } = req.body;
   if (tasks.get(channel_name) === undefined) {
-    tasks.set(channel_name, [text]);
+    tasks.set(channel_name, [`${text} created by ${user_name}`]);
   } else {
-    tasks.get(channel_name).push(text);
+    tasks.get(channel_name).push(`${text} created by ${user_name}`);
   }
   res.json({
     response_type: 'in_channel',
