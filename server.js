@@ -13,7 +13,7 @@ app.post('/slack/command/addtask', (req, res) => {
   const text = `Task added ${req.body.text}`;
   res.json({
     response_type: 'ephemeral',
-    test: text,
+    text: text,
   });
 });
 
