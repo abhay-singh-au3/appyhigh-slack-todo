@@ -29,7 +29,7 @@ app.post('/slack/command/listtasks', (req, res) => {
   if (list === undefined) {
     res.json({
       response_type: 'in_channel',
-      text: 'Nothing yet added to the todos of this channel',
+      text: 'Todos list of this channel is empty',
     });
   } else {
     list = list.length > 1 ? list.join('\n') : list[0];
@@ -46,7 +46,7 @@ app.post('/slack/command/marktask', (req, res) => {
   if (list === undefined) {
     res.json({
       response_type: 'in_channel',
-      text: 'Nothing yet added to the todos of this channel',
+      text: 'Todos list of this channel is empty',
     });
   } else {
     if (list.includes(text)) {
