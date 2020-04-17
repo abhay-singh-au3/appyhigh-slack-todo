@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 
 app.post('/slack/command/addtask', (req, res) => {
   const { channel_name, text, user_name } = req.body;
-  const time = moment().format('MMMM Do YYYY, h:mm:ss a');
+  const time = moment().format('LLL');
   if (tasks.get(channel_name) === undefined) {
     tasks.set(channel_name, [`${text} created by ${user_name} at ${time}`]);
   } else {
