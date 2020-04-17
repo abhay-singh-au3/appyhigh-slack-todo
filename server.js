@@ -18,7 +18,7 @@ app.post('/slack/command/addtask', (req, res) => {
     tasks.get(channel_name).push(text);
   }
   res.json({
-    response_type: 'ephemeral',
+    response_type: 'in_channel',
     text: `Task added ${text}`,
   });
 });
@@ -28,13 +28,13 @@ app.post('/slack/command/listtasks', (req, res) => {
   let list = tasks.get(channel_name);
   if (list === undefined) {
     res.json({
-      response_type: 'ephemeral',
+      response_type: 'in_channel',
       text: 'Nothing yet added to the todos of this channel',
     });
   } else {
     list = list.length > 1 ? list.join('\n') : list[0];
     res.json({
-      response_type: 'ephemeral',
+      response_type: 'in_channel',
       text: list,
     });
   }
@@ -43,8 +43,26 @@ app.post('/slack/command/listtasks', (req, res) => {
 app.post('/slack/command/marktask', (req, res) => {
   const { channel_name, text } = req.body;
   let list = tasks.get(channel_name);
-  list.splice(list.indexOf(text), 1);
-  tasks.set(channel_name, list);
+  if (list === undefined) {
+    res.json({
+      response_type: 'in_channel',
+      text: 'Nothing yet added to the todos of this channel',
+    });
+  } else {
+    if (list.includes(text)) {
+      list.splice(list.indexOf(text), 1);
+      tasks.set(channel_name, list);
+      res.json({
+        response_type: 'in_channel',
+        text: `Removed task from todo ${text}`,
+      });
+    } else {
+      res.json({
+        response_type: 'in_channel',
+        text: `${text} has not been added to the todo of this channel yet`,
+      });
+    }
+  }
 });
 
 app.listen(PORT);
