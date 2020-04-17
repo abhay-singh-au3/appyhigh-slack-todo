@@ -4,5 +4,5 @@ exports.find = (arr, str) => {
       return i;
     }
   }
-  return false;
+  return -1;
 };

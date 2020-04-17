@@ -54,7 +54,8 @@ app.post('/slack/command/marktask', (req, res) => {
     });
   } else {
     const index = find(list, text);
-    if (index != false) {
+    console.log(index);
+    if (index > -1) {
       list.splice(index, 1);
       tasks.set(channel_name, list);
       res.json({
