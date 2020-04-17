@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
+const moment = require('moment');
+
 const PORT = process.env.PORT || 8000;
 const tasks = new Map();
+const { find } = require('./utils');
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -12,10 +15,11 @@ app.get('/', (req, res) => {
 
 app.post('/slack/command/addtask', (req, res) => {
   const { channel_name, text, user_name } = req.body;
+  const time = moment().format('MMMM Do YYYY, h:mm:ss a');
   if (tasks.get(channel_name) === undefined) {
-    tasks.set(channel_name, [text]);
+    tasks.set(channel_name, [`${text} created by ${user_name} at ${time}`]);
   } else {
-    tasks.get(channel_name).push(text);
+    tasks.get(channel_name).push(`${text} created by ${user_name}`);
   }
   res.json({
     response_type: 'in_channel',
@@ -49,8 +53,9 @@ app.post('/slack/command/marktask', (req, res) => {
       text: 'Todos list of this channel is empty',
     });
   } else {
-    if (list.includes(text)) {
-      list.splice(list.indexOf(text), 1);
+    const index = find(list, text);
+    if (index != false) {
+      list.splice(index, 1);
       tasks.set(channel_name, list);
       res.json({
         response_type: 'in_channel',
