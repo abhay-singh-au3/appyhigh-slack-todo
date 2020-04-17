@@ -13,11 +13,11 @@ app.post('/slack/command/addtask', (req, res) => {
   const { channel_name, text, user_name } = req.body;
   const time = moment().format('LLL');
   if (tasks.get(channel_name) === undefined) {
-    tasks.set(channel_name, [`"${text}" created by ${user_name} at ${time}`]);
+    tasks.set(channel_name, [`"${text}" - created by ${user_name} at ${time}`]);
   } else {
     tasks
       .get(channel_name)
-      .push(`"${text}" created by ${user_name} at ${time}`);
+      .push(`"${text}" - created by ${user_name} at ${time}`);
   }
   res.json({
     response_type: 'in_channel',

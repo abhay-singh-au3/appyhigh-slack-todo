@@ -1,6 +1,8 @@
 exports.find = (arr, str) => {
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i].includes(str)) {
+    const val = arr[i].split(' - ')[0];
+    console.log(val);
+    if (val === `"${str}"`) {
       return i;
     }
   }
