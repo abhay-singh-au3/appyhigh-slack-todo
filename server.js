@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 app.post('/slack/command/addtask', (req, res) => {
   const text = `Task added ${req.body.text}`;
   res.json({
-    response_type: 'in_channel',
+    response_type: 'ephemeral',
     test: text,
   });
 });
