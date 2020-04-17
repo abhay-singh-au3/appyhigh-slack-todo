@@ -26,7 +26,7 @@ app.post('/slack/command/addtask', (req, res) => {
 app.post('/slack/command/listtasks', (req, res) => {
   const { channel_name } = req.body;
   let list = tasks.get(channel_name);
-  if (list === undefined) {
+  if (list === undefined || list.length < 1) {
     res.json({
       response_type: 'in_channel',
       text: 'Todos list of this channel is empty',
@@ -43,7 +43,7 @@ app.post('/slack/command/listtasks', (req, res) => {
 app.post('/slack/command/marktask', (req, res) => {
   const { channel_name, text } = req.body;
   let list = tasks.get(channel_name);
-  if (list === undefined) {
+  if (list === undefined || list.length < 1) {
     res.json({
       response_type: 'in_channel',
       text: 'Todos list of this channel is empty',
